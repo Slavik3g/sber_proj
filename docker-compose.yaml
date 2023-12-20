@@ -1,0 +1,9 @@
+services:
+  api:
+    build:
+      context: .
+    container_name: data_handler
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0"]
+    ports:
+      - '8000:8000'
+    restart: "on-failure"

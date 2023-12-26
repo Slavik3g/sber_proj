@@ -18,19 +18,37 @@ class DataHandler(BaseHandler):
         merged = first.copy()
         for key, value in second.items():
             if (
-                key in merged
-                and isinstance(merged[key], dict)
-                and isinstance(value, dict)
+                    key in merged
+                    and isinstance(merged[key], dict)
+                    and isinstance(value, dict)
             ):
                 merged[key] = await cls.__merge_dicts(merged[key], value)
+            elif (
+                    key not in merged
+                    and isinstance(value, list)
+            ):
+                merged[key] = cls.__get_flat_values(value)
             else:
                 merged[key] = value
         return merged
 
     @classmethod
+    def __get_flat_values(cls, to_merge: list) -> list:
+        """
+        Объединить список словарей в список строк
+        """
+        result = []
+        for item in to_merge:
+            if isinstance(item, dict):
+                result.extend(cls.__get_flat_values(list(item.values())))
+            else:
+                result.append(item)
+        return result
+
+    @classmethod
     async def merge_trees(cls, data: dict) -> dict:
         """
-        Рерурсивное объедение двух словарей вложенных словарей.
+        Рерурсивное объедение двух вложенных словарей.
 
         Returns:
             dict: Один словарь с объединенными полями.

@@ -5,7 +5,7 @@ from app.services.document_services import JsonProcessingService, XMLProcessingS
 from fastapi import Request, Response
 
 
-class DocumentTypeCheckerMiddleware(BaseHTTPMiddleware):
+class ApplicationTypeMiddleware(BaseHTTPMiddleware):
     """
     Миддлвар для определения типа контента
     """

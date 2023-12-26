@@ -9,8 +9,9 @@ class XmlConverter(BaseConverter):
     """
     Конвертер из XML в dict
     """
+
     @classmethod
-    async def convert(cls, data: str) -> dict:
+    def convert(cls, data: str) -> dict:
         try:
             return xmltodict.parse(data)["root"]
         except xml.parsers.expat.ExpatError:
